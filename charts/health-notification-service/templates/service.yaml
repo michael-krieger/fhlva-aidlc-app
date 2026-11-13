@@ -5,6 +5,12 @@ metadata:
   namespace: {{ .Release.Namespace }}
   labels:
     app: {{ .Chart.Name }}
+  {{- if .Values.monitoring.prometheus.enabled }}
+  annotations:
+    prometheus.io/scrape: "true"
+    prometheus.io/path: {{ .Values.monitoring.prometheus.path | quote }}
+    prometheus.io/port: {{ .Values.service.port | quote }}
+  {{- end }}
 spec:
   type: ClusterIP
   selector:
